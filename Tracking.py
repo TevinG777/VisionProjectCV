@@ -19,7 +19,7 @@ def isSquare(frame):
     
     #create list of contour points 
     contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    print("workign")
+    
     #filter points to only include squares
     pinkSquares = []
     for cnt in contours:
