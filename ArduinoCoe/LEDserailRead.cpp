@@ -14,11 +14,17 @@ void setup() {
 }
 
 void loop() {
-    if(digitalRead(button) == HIGH){
-        digitalWrite(LED, HIGH);
-        Serial.println("Button is pressed");
-      
-    }
-  digitalWrite(LED, LOW);
+  if(Serial.available() > 0){
+    String msgP = Serial.readString();
+
+    if(msgP == "on"){
+      digitalWrite(LED, HIGH);
+      delay(1000);
+      }
+      else if(msgP == "off"){
+        digitalWrite(LED, LOW);
+      }
+  }
+
 }
 
