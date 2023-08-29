@@ -7,18 +7,18 @@ def isSquare(frame):
     #convert frame from camera to HSV color space
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
-    #define threshold for edge detection pink
-    lower_pink = np.array([140, 40, 210])
-    upper_pink = np.array([170, 70, 220])
+    #define threshold for edge detection green
+    lower_green = np.array([80, 140, 128])
+    upper_green = np.array([90, 255, 211])
     
     #define mask for pink
-    maskPink = cv2.inRange(frame, lower_pink, upper_pink)
+    maskPink = cv2.inRange(frame, lower_green, upper_green)
     
     #create list of contour points 
     contours, _ = cv2.findContours(maskPink, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     #filter points to only include squares
-    pinkSquares = []
+    greenSquares = []
     for cnt in contours:
         #define epsilon for approximation, determines the accuracy of the approximation, and if it is closed
         epsilon = 0.1*cv2.arcLength(cnt, True)
@@ -27,8 +27,8 @@ def isSquare(frame):
         minArea = 100
         
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
-            pinkSquares.append(cnt)
-    return pinkSquares
+            greenSquares.append(cnt)
+    return greenSquares
     
 
 # Create a VideoCapture object
