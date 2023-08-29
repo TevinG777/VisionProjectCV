@@ -24,7 +24,9 @@ def isSquare(frame):
         epsilon = 0.1*cv2.arcLength(cnt, True)
         
         approx = cv2.approxPolyDP(cnt, epsilon, True)
-        if len(approx) == 4:
+        minArea = 100
+        
+        if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
             pinkSquares.append(cnt)
     return pinkSquares
     
