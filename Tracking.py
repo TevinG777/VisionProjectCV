@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import serial.tools.list_ports
-
+import time
 
 #Get list of ports to interact with arduino
 ports = list(serial.tools.list_ports.comports())
@@ -45,10 +45,15 @@ def isSquare(frame):
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
             greenSquares.append(cnt)
             area = cv2.contourArea(cnt)
-            print("The area of the square is: " + str(area))
             
-            #write area to serial port as a float
-            ser.write(str(area).encode('utf-8'))
+            
+            # Check if it's been 1 second since the last send
+            current_time = time.time()
+            if current_time - last_send_time >= 1.0:
+                print("The area of the square is: " + str(area))
+                # Write area to the serial port as a float
+                ser.write(str(area).encode('utf-8'))
+                last_send_time = current_time  # Update the last send time
             
             
     return greenSquares
