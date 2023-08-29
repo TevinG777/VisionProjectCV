@@ -8,9 +8,9 @@ def isSquare(frame):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     #define threshold for edge detection green
-    lower_green = np.array([80, 140, 128])
+    lower_green = np.array([80, 255, 70])
     upper_green = np.array([90, 255, 211])
-    
+        
     #define mask for pink
     maskPink = cv2.inRange(frame, lower_green, upper_green)
     
@@ -26,9 +26,10 @@ def isSquare(frame):
         approx = cv2.approxPolyDP(cnt, epsilon, True)
         minArea = 100
         
+        #if the contour is a square, and the area is greater than the minimum area, add it to the list
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
             greenSquares.append(cnt)
-            print("The area of the square is: " + cv2.contourArea(cnt))
+            print("The area of the square is: " + str(cv2.contourArea(cnt)))
     return greenSquares
     
 
