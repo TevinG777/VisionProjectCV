@@ -1,24 +1,21 @@
 import cv2
 import numpy as np
+import imutils
 
 
 def isSquare(frame):
     #convert frame from camera to HSV color space
-    #frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    
     #define threshold for edge detection pink
-    #lowerThresholdPink = np.array([300, 80, 70])
-    #upperThresholdPink = np.array([320, 100, 100])
+    lowerThresholdPink = np.array([300, 80, 70])
+    upperThresholdPink = np.array([320, 100, 100])
     
     #define mask for pink
-    #maskPink = cv2.inRange(frame, lowerThresholdPink, upperThresholdPink)
-    
-    #find edges that are pink
-    edges = cv2.Canny(frame, 100, 200)
-    
+    maskPink = cv2.inRange(frame, lowerThresholdPink, upperThresholdPink)
     
     #create list of contour points 
-    contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(maskPink, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     #filter points to only include squares
     pinkSquares = []
