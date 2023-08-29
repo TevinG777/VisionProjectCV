@@ -15,22 +15,33 @@ void setup() {
 
 void loop() {
   if(Serial.available() > 0){
+    unsigned long currentTime = millis();
+    const long interval = 250;
+    unsigned previousTime = 0;
+
     String msgP = Serial.readString();
 
     //Convert serial input to a float
     float msgPf = msgP.toFloat();
 
-    //if the float is between 1000-15000 then set the LED to HIGH if not green LED On
-    if(msgPf > 1000 && msgPf < 15000){
-      digitalWrite(LED, HIGH);
-      digitalWrite(LED2, LOW);
-      }
-    else{
-      digitalWrite(LED, LOW);
-      digitalWrite(LED2, HIGH);
-      }
+    //take sample of data every .25 seconds 
+    if(currentTime - previousTime >= interval){
+        previousTime = currentTime;
+    
+        //if the float is between 1000-15000 then set the LED to HIGH if not green LED On
+        if(msgPf > 1000 && msgPf < 15000){
+            digitalWrite(LED, HIGH);
+            delay(1000);
+            digitalWrite(LED2, LOW);
+        }
+        else{
+            digitalWrite(LED, LOW);
+            digitalWrite(LED2, HIGH);
+            delay(1000);
+        }
         
-      
+    }
+
   }
   else{
     digitalWrite(LED, HIGH);
