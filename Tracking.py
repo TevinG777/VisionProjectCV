@@ -1,6 +1,21 @@
 import cv2
 import numpy as np
-import imutils
+import serial.tools.list_ports
+
+
+#Get list of ports to interact with arduino
+ports = list(serial.tools.list_ports.comports())
+#initialize serial port
+ser = serial.Serial()
+#select port that has Arduino in description
+for p in ports:
+    if "Arduino" in p.description:
+        ser.port = p.device
+#define baud rate   
+ser.baudrate = 9600
+#open serial port
+ser.open()
+
 
 
 def isSquare(frame):
@@ -29,10 +44,15 @@ def isSquare(frame):
         #if the contour is a square, and the area is greater than the minimum area, add it to the list
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
             greenSquares.append(cnt)
-            print("The area of the square is: " + str(cv2.contourArea(cnt)))
+            area = cv2.contourArea(cnt)
+            print("The area of the square is: " + str(area))
+            
+            #write area to serial port as a float
+            ser.write(str(area).encode('utf-8'))
+            
+            
     return greenSquares
     
-
 # Create a VideoCapture object
 cap = cv2.VideoCapture(0)
 
