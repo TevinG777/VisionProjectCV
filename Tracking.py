@@ -28,6 +28,7 @@ def isSquare(frame):
         
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
             greenSquares.append(cnt)
+            print("The area of the square is: " + cv2.contourArea(cnt))
     return greenSquares
     
 
