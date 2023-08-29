@@ -14,11 +14,26 @@ void setup() {
 }
 
 void loop() {
-    if(digitalRead(button) == HIGH){
+  if(serial.available() > 0){
+    String msgP = serial.readString();
+
+    if(msgP == "on"){
+      if(digitalRead(button) == HIGH){
         digitalWrite(LED, HIGH);
         Serial.println("Button is pressed");
       
+      }
+        digitalWrite(LED, LOW);
+      }
+      else if(msgP == "off"){
+        digitalWrite(LED, LOW);
+      }
+      else{
+        Serial.println("Invalid input");
     }
-  digitalWrite(LED, LOW);
+  }
+
+
+
 }
 
