@@ -8,11 +8,11 @@ def isSquare(frame):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     #define threshold for edge detection pink
-    lowerThresholdPink = np.array([300, 80, 70])
-    upperThresholdPink = np.array([320, 100, 100])
+    lower_pink = np.array([140, 40, 210])
+    upper_pink = np.array([170, 70, 220])
     
     #define mask for pink
-    maskPink = cv2.inRange(frame, lowerThresholdPink, upperThresholdPink)
+    maskPink = cv2.inRange(frame, lower_pink, upper_pink)
     
     #create list of contour points 
     contours, _ = cv2.findContours(maskPink, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
