@@ -31,21 +31,15 @@ void loop() {
         //if the float is between 1000-15000 then set the LED to HIGH if not green LED On
         if(msgPf > 1000 && msgPf < 15000){
             digitalWrite(LED, HIGH);
-            delay(1000);
             digitalWrite(LED2, LOW);
         }
         else{
             digitalWrite(LED, LOW);
             digitalWrite(LED2, HIGH);
-            delay(1000);
         }
         
     }
 
-  }
-  else{
-    digitalWrite(LED, HIGH);
-    digitalWrite(LED2, HIGH);
   }
 
 }
