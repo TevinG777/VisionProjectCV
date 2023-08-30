@@ -87,7 +87,7 @@ while True:
 
     #display from with squares
     squares = isSquare(frame)
-    cv2.drawContours(frame, squares, -1, (255, 0, 0), 3)
+    cv2.drawContours(frame, squares, -1, (0, 0, 255), 3)
     cv2.imshow("Frame", frame)
     
 
