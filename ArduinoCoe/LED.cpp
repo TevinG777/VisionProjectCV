@@ -26,19 +26,20 @@ void loop() {
 
     String msgP = Serial.readString();
 
-    //initlize variable to hold the float value for area and x pos
+    // Initialize variables to hold the float value for area and x pos
     float area = 0.0;
     int pos = 0;
 
     int commaIndex = msgP.indexOf(',');
 
-    if(commaIndex == -1){
+    if (commaIndex != -1) {
       String areaStr = msgP.substring(0, commaIndex);
       area = areaStr.toFloat();
 
       String posStr = msgP.substring(commaIndex + 1);
       pos = posStr.toInt();
     }
+
     
     //if the float is between 1000-15000 then set the LED to HIGH if not green LED On
     if(area > 1000 && area < 9000){
@@ -53,9 +54,9 @@ void loop() {
         lcd_1.setCursor(0, 0);
         lcd_1.print("Mid Range");
 
-        // Print the distance to the LCD
+        //Print the area to the LCD
         lcd_1.setCursor(0, 1);
-        lcd_1.print(msgP);
+        lcd_1.print("Area: " + String(area));
 
     }
     else if(area <= 1000){
@@ -70,8 +71,9 @@ void loop() {
         lcd_1.setCursor(0, 0);
         lcd_1.print("Far Range");
 
+        //Print the area to the LCD
         lcd_1.setCursor(0, 1);
-        lcd_1.print(msgP);
+        lcd_1.print("Area: " + String(area));
     }
     else{
       //Clear the LCD
@@ -85,8 +87,9 @@ void loop() {
       lcd_1.setCursor(0, 0);
       lcd_1.print("Close Range");
 
+      //Print the area to the LCD
       lcd_1.setCursor(0, 1);
-      lcd_1.print(msgP);
+      lcd_1.print("Area: " + String(area));
 
     }
         
