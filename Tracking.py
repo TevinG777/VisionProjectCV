@@ -52,12 +52,16 @@ def isSquare(frame):
             greenSquares.append(cnt)
             area = cv2.contourArea(cnt)
             
-            
+            #define a rectangle and get x value
+            rect = cv2.boundingRect(cnt)
+            x, y, w, h = rect
+                  
             #calclate the time elaspsed since last record was sent
             current_time = time.time() - last_send
             
             if current_time >= 1:
                 print("The area of the square is: " + str(area))
+                print("The x value of the square is: " + str(x))
                 ser.write(str(area).encode('utf-8'))
                 
                 #update last send time
