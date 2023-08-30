@@ -30,13 +30,17 @@ void loop() {
     float area = 0.0;
     int pos = 0;
 
+    //  Find the comma in the string
     int commaIndex = msgP.indexOf(',');
 
+    //  If the comma is found, then parse the string
     if (commaIndex != -1) {
-      String areaStr = msgP.substring(0, commaIndex);
+      //  Get the area string
+      String areaStr = msgP.substring(1, commaIndex);
       area = areaStr.toFloat();
 
-      String posStr = msgP.substring(commaIndex + 1);
+      //  Get the position string
+      String posStr = msgP.substring(commaIndex + 0);
       pos = posStr.toInt();
     }
 
@@ -52,7 +56,7 @@ void loop() {
         
         //PRitn mid range to LCD
         lcd_1.setCursor(0, 0);
-        lcd_1.print("Mid Range");
+        lcd_1.print("Md" + String(pos));
 
         //Print the area to the LCD
         lcd_1.setCursor(0, 1);
@@ -69,7 +73,7 @@ void loop() {
 
         //Print mid range to LCD
         lcd_1.setCursor(0, 0);
-        lcd_1.print("Far Range");
+        lcd_1.print("Fr" + String(pos));
 
         //Print the area to the LCD
         lcd_1.setCursor(0, 1);
@@ -85,7 +89,7 @@ void loop() {
 
       //PRitn mid range to LCD
       lcd_1.setCursor(0, 0);
-      lcd_1.print("Close Range");
+      lcd_1.print("Cls" + String(pos));
 
       //Print the area to the LCD
       lcd_1.setCursor(0, 1);
