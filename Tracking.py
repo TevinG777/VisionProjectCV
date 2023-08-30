@@ -66,7 +66,8 @@ def isSquare(frame):
                 
                 #update last send time
                 last_send = time.time()
-                
+        
+                  
             
       
     return greenSquares
@@ -91,6 +92,15 @@ while True:
 
     #display from with squares
     squares = isSquare(frame)
+    
+    #check if squares array is empty, and if it is send 0,0 to Arduino over serial
+    if len(squares) == 0:
+        current_time = time.time() - last_send
+        if current_time >= 1:
+            print("0,0")
+            ser.write(("0,0").encode('utf-8'))
+            last_send = time.time()
+    
     cv2.drawContours(frame, squares, -1, (0, 0, 255), 3)
     cv2.imshow("Frame", frame)
     

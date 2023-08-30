@@ -77,6 +77,19 @@ void loop() {
         lcd_1.print("Area: " + String(area));
 
     }
+    else if(area == 0){
+      digitalWrite(LED, HIGH);
+      digitalWrite(LED2, HIGH);
+      digitalWrite(LED3, HIGH);
+
+      //Clear the LCD
+      lcd_1.clear();
+
+      //Print STOP to LCD
+      lcd_1.setCursor(0, 0);
+      lcd_1.print("STOP");
+
+    }
     else if(area <= 1000){
         digitalWrite(LED, LOW);
         digitalWrite(LED2, HIGH);
