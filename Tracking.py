@@ -48,7 +48,7 @@ def isSquare(frame):
             print("The area of the square is: " + str(area))
             
             #send area to serial port
-            #ser.write(str(area).encode())
+            ser.write(str(area).encode())
             
             #sleep for one second
             time.sleep(1)
