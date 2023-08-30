@@ -35,13 +35,15 @@ void loop() {
 
     //  If the comma is found, then parse the string
     if (commaIndex != -1) {
+      //  Get the position string
+      String posStr = msgP.substring(commaIndex , 0);
+      pos = posStr.toInt();
+
       //  Get the area string
-      String areaStr = msgP.substring(1, commaIndex);
+      String areaStr = msgP.substring(commaIndex + 1);
       area = areaStr.toFloat();
 
-      //  Get the position string
-      String posStr = msgP.substring(commaIndex + 0);
-      pos = posStr.toInt();
+
     }
 
     
