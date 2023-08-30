@@ -3,6 +3,9 @@ import numpy as np
 import serial.tools.list_ports
 import time
 
+#initilize global time variable
+last_send = time.time()
+
 #Get list of ports to interact with arduino
 ports = list(serial.tools.list_ports.comports())
 #initialize serial port
@@ -19,6 +22,9 @@ ser.open()
 
 
 def isSquare(frame):
+    #initilize variable to store the last time a record was sent
+    global last_send
+    
     #convert frame from camera to HSV color space
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
@@ -45,19 +51,19 @@ def isSquare(frame):
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
             greenSquares.append(cnt)
             area = cv2.contourArea(cnt)
-            print("The area of the square is: " + str(area))
-            
-            #send area to serial port
-            ser.write(str(area).encode())
-            
-            #sleep for one second
-            time.sleep(1)
             
             
+            #calclate the time elaspsed since last record was sent
+            current_time = time.time() - last_send
+            print(current_time)
+            if current_time >= 1:
+                ser.write(str(area).encode('utf-8'))
+                
+                #update last send time
+                last_send = time.time()
+                
             
-            
-            
-            
+      
     return greenSquares
     
 # Create a VideoCapture object
@@ -78,6 +84,8 @@ while True:
         print("Error: Could not read frame.")
         break
 
+   
+    
     #display from with squares
     squares = isSquare(frame)
     cv2.drawContours(frame, squares, -1, (0, 255, 0), 3)
