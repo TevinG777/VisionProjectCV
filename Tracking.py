@@ -47,8 +47,15 @@ def isSquare(frame):
             area = cv2.contourArea(cnt)
             print("The area of the square is: " + str(area))
             
-            #write area to serial port as a float
-            ser.write(str(area).encode('utf-8'))
+            #send area to serial port
+            ser.write(str(area).encode())
+            
+            #sleep for one second
+            time.sleep(1)
+            
+            
+            
+            
             
             
     return greenSquares
