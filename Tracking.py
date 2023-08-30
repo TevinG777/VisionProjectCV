@@ -85,16 +85,12 @@ while True:
         print("Error: Could not read frame.")
         break
 
-   
-    
     #display from with squares
     squares = isSquare(frame)
     cv2.drawContours(frame, squares, -1, (0, 255, 0), 3)
     cv2.imshow("Frame", frame)
     
-    
-    
-    
+
     # Exit program when q is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
