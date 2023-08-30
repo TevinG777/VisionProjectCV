@@ -55,8 +55,9 @@ def isSquare(frame):
             
             #calclate the time elaspsed since last record was sent
             current_time = time.time() - last_send
-            print(current_time)
+            
             if current_time >= 1:
+                print("The area of the square is: " + str(area))
                 ser.write(str(area).encode('utf-8'))
                 
                 #update last send time
