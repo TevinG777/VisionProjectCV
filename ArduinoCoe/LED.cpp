@@ -26,11 +26,25 @@ void loop() {
 
     String msgP = Serial.readString();
 
-    //Convert serial input to a float
-    float msgPf = msgP.toFloat();
+    //initlize variable to hold the float value for area and x pos
+    float area = 0.0;
+    int pos = 0;
+
+    int commaIndex = msgP.indexOf(',');
+
+    if(commaIndex == -1){
+      String areaStr = msgP.substring(0, commaIndex);
+      area = areaStr.toFloat();
+
+      String posStr = msgP.substring(commaIndex + 1);
+      pos = posStr.toInt();
+    }
     
     //if the float is between 1000-15000 then set the LED to HIGH if not green LED On
-    if(msgPf > 1000 && msgPf < 15000){
+    if(area > 1000 && area < 9000){
+        //Clear the LCD
+        lcd_1.clear();
+        
         digitalWrite(LED, HIGH);
         digitalWrite(LED2, LOW);
         digitalWrite(LED3, LOW);
@@ -38,20 +52,42 @@ void loop() {
         //PRitn mid range to LCD
         lcd_1.setCursor(0, 0);
         lcd_1.print("Mid Range");
+
+        // Print the distance to the LCD
+        lcd_1.setCursor(0, 1);
+        lcd_1.print(msgP);
+
     }
-    else if(msgPf <= 1000 || msgPf >= 15000){
+    else if(area <= 1000){
         digitalWrite(LED, LOW);
         digitalWrite(LED2, HIGH);
         digitalWrite(LED3, LOW);
-        
-        //PRitn mid range to LCD
+
+        //Clear the LCD
+        lcd_1.clear();
+
+        //Print mid range to LCD
         lcd_1.setCursor(0, 0);
-        lcd_1.print("FaR Range");
+        lcd_1.print("Far Range");
+
+        lcd_1.setCursor(0, 1);
+        lcd_1.print(msgP);
     }
     else{
+      //Clear the LCD
+      lcd_1.clear();   
+
       digitalWrite(LED, LOW);
       digitalWrite(LED2, LOW);
       digitalWrite(LED3, HIGH);
+
+      //PRitn mid range to LCD
+      lcd_1.setCursor(0, 0);
+      lcd_1.print("Close Range");
+
+      lcd_1.setCursor(0, 1);
+      lcd_1.print(msgP);
+
     }
         
   }
