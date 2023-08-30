@@ -32,11 +32,11 @@ def isSquare(frame):
     lower_green = np.array([80, 140, 128])
     upper_green = np.array([90, 255, 211])
     
-    #define mask for pink
-    maskPink = cv2.inRange(frame, lower_green, upper_green)
+    #define mask for green
+    maskGreen = cv2.inRange(frame, lower_green, upper_green)
     
     #create list of contour points 
-    contours, _ = cv2.findContours(maskPink, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(maskGreen, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     #filter points to only include squares
     greenSquares = []
@@ -87,7 +87,7 @@ while True:
 
     #display from with squares
     squares = isSquare(frame)
-    cv2.drawContours(frame, squares, -1, (0, 255, 0), 3)
+    cv2.drawContours(frame, squares, -1, (255, 0, 0), 3)
     cv2.imshow("Frame", frame)
     
 
