@@ -45,7 +45,19 @@ void loop() {
 
 
     }
+    // Initilize strign vars
+    String posTxt = "Unkown";
 
+    //If the object is between the pos values 0, 100 set a posTxt variable to left, if it is from 100-350 set it to center, if it is 350-600 set it to right
+    if(pos > 0 && pos < 100){
+      posTxt = "Left";
+    }
+    else if(pos >= 100 && pos < 350){
+      posTxt = "Center";
+    }
+    else{
+      posTxt = "Right";
+    }
     
     //if the float is between 1000-15000 then set the LED to HIGH if not green LED On
     if(area > 1000 && area < 9000){
@@ -58,7 +70,7 @@ void loop() {
         
         //PRitn mid range to LCD
         lcd_1.setCursor(0, 0);
-        lcd_1.print("Md" + String(pos));
+        lcd_1.print("Middle: " + posTxt);
 
         //Print the area to the LCD
         lcd_1.setCursor(0, 1);
@@ -75,7 +87,7 @@ void loop() {
 
         //Print mid range to LCD
         lcd_1.setCursor(0, 0);
-        lcd_1.print("Fr" + String(pos));
+        lcd_1.print("Far: " + posTxt);
 
         //Print the area to the LCD
         lcd_1.setCursor(0, 1);
@@ -91,7 +103,7 @@ void loop() {
 
       //PRitn mid range to LCD
       lcd_1.setCursor(0, 0);
-      lcd_1.print("Cls" + String(pos));
+      lcd_1.print("Close: " + posTxt);
 
       //Print the area to the LCD
       lcd_1.setCursor(0, 1);
