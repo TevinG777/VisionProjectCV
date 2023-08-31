@@ -77,7 +77,7 @@ void loop() {
         lcd_1.print("Area: " + String(area));
 
     }
-    else if(area == 0){
+    else if(area == 0.0){
       digitalWrite(LED, HIGH);
       digitalWrite(LED2, HIGH);
       digitalWrite(LED3, HIGH);
