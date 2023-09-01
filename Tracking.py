@@ -31,6 +31,9 @@ def isSquare(frame):
     #define threshold for edge detection green
     lower_green = np.array([0, 0, 205])
     upper_green = np.array([255, 50, 255])
+    #Hue: We dont care what value because we are looking for white
+    #Saturation: How color color
+    #Value: How bright the color is
     
     #define mask for green
     maskGreen = cv2.inRange(frame, lower_green, upper_green)
