@@ -29,8 +29,8 @@ def isSquare(frame):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     #define threshold for edge detection green
-    lower_green = np.array([80, 140, 128])
-    upper_green = np.array([90, 255, 211])
+    lower_green = np.array([86, 96, 141])
+    upper_green = np.array([94, 255, 250])
     
     #define mask for green
     maskGreen = cv2.inRange(frame, lower_green, upper_green)
