@@ -2,8 +2,8 @@
 #include <LiquidCrystal.h>
 
 // put function declarations here:
-int LED = 13;
-int LED2 = 12;
+int LED = 12;
+int LED2 = 13;
 int LED3 = 11;
 int seconds = 0;
 
