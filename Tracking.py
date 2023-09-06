@@ -28,21 +28,26 @@ def isSquare(frame):
     #convert frame from camera to HSV color space
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
-    #define threshold for edge detection green
-    lower_green = np.array([0, 0, 205])
-    upper_green = np.array([255, 50, 255])
+    #define threshold for edge detection for multimeter
+    lower_color = np.array([7, 120, 150])
+    upper_color = np.array([25, 255, 255])
     #Hue: We dont care what value because we are looking for white
     #Saturation: How color color
     #Value: How bright the color is
     
-    #define mask for green
-    maskGreen = cv2.inRange(frame, lower_green, upper_green)
-    
+    #define kernel for erosion
+    kernel = np.ones((5, 5), np.uint8)
+
+    #define mask for color
+    mask = cv2.inRange(frame, lower_color, upper_color)
+    mask_eroded = cv2 . erode ( mask , kernel , iterations = 3)
+    mask_eroded_dilated = cv2 . dilate ( mask_eroded , None , iterations = 10)
+
     #create list of contour points 
-    contours, _ = cv2.findContours(maskGreen, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(mask_eroded_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     #filter points to only include squares
-    greenSquares = []
+    squares = []
     for cnt in contours:
         #define epsilon for approximation, determines the accuracy of the approximation, and if it is closed
         epsilon = 0.1*cv2.arcLength(cnt, True)
@@ -52,7 +57,7 @@ def isSquare(frame):
         
         #if the contour is a square, and the area is greater than the minimum area, add it to the list
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
-            greenSquares.append(cnt)
+            squares.append(cnt)
             area = cv2.contourArea(cnt)
             
             #define a rectangle and get x value
@@ -73,7 +78,7 @@ def isSquare(frame):
                   
             
       
-    return greenSquares
+    return squares
     
 # Create a VideoCapture object
 cap = cv2.VideoCapture(0)
@@ -104,7 +109,7 @@ while True:
             ser.write(("0,0").encode('utf-8'))
             last_send = time.time()
     
-    cv2.drawContours(frame, squares, -1, (0, 0, 255), 3)
+    cv2.drawContours(frame, squares, -1, (225, 0, 0), 3)
     cv2.imshow("Frame", frame)
     
 

@@ -32,13 +32,18 @@ while True:
         print("Error: Could not read frame.")
         break
 
-    # Display the camera feed
-    cv2.imshow("Camera Feed", frame)
+    # Apply erosion and dilation to the frame
+    kernel = np.ones((5, 5), np.uint8)
+    erosion = cv2.erode(frame, kernel, iterations=1)
+    erosion_dilation = cv2.dilate(erosion, kernel, iterations=1)
+
+    # Display the camera feed and the processed frames
+    cv2.imshow("Camera Feed", erosion_dilation)
 
     # Exit program when q is pressed
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Release the camera and close the window
+# Release the camera and close the windows
 cap.release()
 cv2.destroyAllWindows()
