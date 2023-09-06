@@ -59,8 +59,8 @@ while True:
     # Convert to HSV format and apply color threshold
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower, upper)
-    mask_eroded = cv2 . erode ( mask , kernel , iterations = 3)
-    mask_eroded_dilated = cv2 . dilate ( mask_eroded , None , iterations = 10)
+    mask_eroded = cv2 . erode ( mask , kernel , iterations = 2)
+    mask_eroded_dilated = cv2 . dilate ( mask_eroded , None , iterations = 8)
 
     # Print if there is a change in HSV value
     if((phMin != hMin) or (psMin != sMin) or (pvMin != vMin) or (phMax != hMax) or (psMax != sMax) or (pvMax != vMax)):

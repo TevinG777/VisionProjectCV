@@ -29,7 +29,7 @@ def isSquare(frame):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     #define threshold for edge detection for multimeter
-    lower_color = np.array([7, 120, 150])
+    lower_color = np.array([7, 121, 201])
     upper_color = np.array([25, 255, 255])
     #Hue: We dont care what value because we are looking for white
     #Saturation: How color color
@@ -40,8 +40,8 @@ def isSquare(frame):
 
     #define mask for color
     mask = cv2.inRange(frame, lower_color, upper_color)
-    mask_eroded = cv2 . erode ( mask , kernel , iterations = 3)
-    mask_eroded_dilated = cv2 . dilate ( mask_eroded , None , iterations = 10)
+    mask_eroded = cv2 . erode ( mask , kernel , iterations = 2)
+    mask_eroded_dilated = cv2 . dilate ( mask_eroded , None , iterations = 8)
 
     #create list of contour points 
     contours, _ = cv2.findContours(mask_eroded_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
