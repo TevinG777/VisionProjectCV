@@ -81,7 +81,8 @@ def isSquare(frame):
     return squares
     
 # Create a VideoCapture object
-cap = cv2.VideoCapture(0)
+url = "10.20.1.40:81/stream"
+cap = cv2.VideoCapture(url)
 
 # Error handling
 if not cap.isOpened():
