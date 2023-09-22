@@ -5,7 +5,8 @@ def nothing(x):
     pass
 
 # Create a VideoCapture object for the camera
-cap = cv2.VideoCapture(0)
+url = "http://192.168.4.50:81/stream"
+cap = cv2.VideoCapture(url)
 
 # Error handling
 if not cap.isOpened():
@@ -50,17 +51,18 @@ while True:
     sMax = cv2.getTrackbarPos('SMax', 'image')
     vMax = cv2.getTrackbarPos('VMax', 'image')
 
-    # Set minimum and maximum HSV values to display
+    # Set minimum and maximum HSV values to create the mask
     lower = np.array([hMin, sMin, vMin])
     upper = np.array([hMax, sMax, vMax])
 
-    kernel = np.ones((5, 5), np.uint8)
-
-    # Convert to HSV format and apply color threshold
+    # Convert to HSV format
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    # Create a mask based on the HSV range
     mask = cv2.inRange(hsv, lower, upper)
-    mask_eroded = cv2 . erode ( mask , kernel , iterations = 2)
-    mask_eroded_dilated = cv2 . dilate ( mask_eroded , None , iterations = 8)
+
+    # Apply the mask to the original frame to keep it in color
+    result = cv2.bitwise_and(frame, frame, mask=mask)
 
     # Print if there is a change in HSV value
     if((phMin != hMin) or (psMin != sMin) or (pvMin != vMin) or (phMax != hMax) or (psMax != sMax) or (pvMax != vMax)):
@@ -72,8 +74,8 @@ while True:
         psMax = sMax
         pvMax = vMax
 
-    # Display result image
-    cv2.imshow('image', mask_eroded_dilated)
+    # Display the result image with color
+    cv2.imshow('image', result)
 
     # Exit program when 'q' is pressed
     if cv2.waitKey(10) & 0xFF == ord('q'):
