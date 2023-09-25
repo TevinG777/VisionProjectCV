@@ -1,14 +1,54 @@
 import asyncio
 import websockets
 import json
+import serial.tools.list_ports
 
 async def client():
-    async with websockets.connect("ws://10.20.1.93:8765") as websocket:
-        while True:
-            message = await websocket.recv()
-            data = json.loads(message)
-            data1 = data.get("data1")
-            data2 = data.get("data2")
-            print(f"Received data1: {data1}, data2: {data2}")
+    # Get list of ports to interact with Arduino
+    ports = list(serial.tools.list_ports.comports())
+    arduino_port = None
 
-asyncio.get_event_loop().run_until_complete(client())
+    # Find the port that matches the specified HWID
+    for p in ports:
+        if "USB VID:PID=2341:0043 SER=55332333130351A04131 LOCATION=1-1:1.0" in p.hwid:
+            arduino_port = p.device
+            break
+    
+    # Error if the Arduino is not found
+    if not arduino_port:
+        print("Arduino not found in the available ports.")
+        return
+
+    # Initialize and open the serial port with arduino baudrate
+    ser = serial.Serial(arduino_port, baudrate=9600)
+    try:
+        # Connect to the WebSocket server
+        async with websockets.connect("ws://10.20.1.93:8765") as websocket:
+            while True:
+                message = await websocket.recv()
+                try:
+                    data = json.loads(message)
+                    data1 = data.get("data1")
+                    data2 = data.get("data2")
+                    print(f"Received data1: {data1}, data2: {data2}")
+
+                    # Validate and send data to the Arduino
+                    if isinstance(data1, int) and isinstance(data2, int):
+                        ser.write(f"{data1},{data2}\n".encode('utf-8'))
+                    else:
+                        print("Invalid data received from WebSocket.")
+                except json.JSONDecodeError as e:
+                    print(f"Error decoding JSON: {e}")
+                except Exception as e:
+                    print(f"Error processing data: {e}")
+                    
+    # Print if websocket connection is closed
+    except websockets.exceptions.ConnectionClosedError as e:
+        print(f"WebSocket connection closed: {e}")
+    except serial.SerialException as e:
+        print(f"Serial port error: {e}")
+    finally:
+        ser.close()
+
+if __name__ == "__main__":
+    asyncio.get_event_loop().run_until_complete(client())
