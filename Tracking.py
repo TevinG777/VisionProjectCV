@@ -2,24 +2,9 @@ import cv2
 import numpy as np
 import serial.tools.list_ports
 import time
-
-#initilize global time variable
-last_send = time.time()
-
-#Get list of ports to interact with arduino
-ports = list(serial.tools.list_ports.comports())
-#initialize serial port
-ser = serial.Serial()
-#select port that has Arduino in description
-for p in ports:
-    if "Arduino" in p.description:
-        ser.port = p.device
-#define baud rate   
-ser.baudrate = 9600
-#open serial port
-ser.open()
-
-
+import asyncio
+import websockets
+import json
 
 def isSquare(frame):
     #initilize variable to store the last time a record was sent
@@ -70,7 +55,7 @@ def isSquare(frame):
             if current_time >= 1:
                 #print send message to Arudino
                 print(str(x) + "," + str(area))
-                ser.write((str(x) + "," + str(area)).encode('utf-8'))
+                #ser.write((str(x) + "," + str(area)).encode('utf-8'))
                 
                 #update last send time
                 last_send = time.time()
@@ -79,7 +64,7 @@ def isSquare(frame):
             
       
     return squares
-    
+
 # Create a VideoCapture object
 url = "10.20.1.40:81/stream"
 cap = cv2.VideoCapture(url)
@@ -89,7 +74,7 @@ if not cap.isOpened():
     print("Error: Could not open camera.")
     exit()
 
-    
+
 while True:
     # Capture a frame from the camera
     ret, frame = cap.read()
@@ -107,7 +92,7 @@ while True:
         current_time = time.time() - last_send
         if current_time >= 1:
             print("0,0")
-            ser.write(("0,0").encode('utf-8'))
+            #ser.write(("0,0").encode('utf-8'))
             last_send = time.time()
     
     cv2.drawContours(frame, squares, -1, (225, 0, 0), 3)
