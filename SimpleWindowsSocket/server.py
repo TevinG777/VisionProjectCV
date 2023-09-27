@@ -8,7 +8,7 @@ async def send_custom_data(websocket, path):
     while True:
         # Generate two random integer values (you can replace this with your own data)
         data1 = random.randint(0, 500)
-        data2 = random.randint(0, 1100)
+        data2 = random.randint(0, 11000)
         
         # Send the data to the client as a JSON object
         message = {"data1": data1, "data2": data2}
