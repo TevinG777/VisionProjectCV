@@ -1,27 +1,12 @@
 import cv2
 import numpy as np
-import serial.tools.list_ports
 import time
 
-#initilize global time variable
-last_send = time.time()
 
-#Get list of ports to interact with arduino
-ports = list(serial.tools.list_ports.comports())
-#initialize serial port
-ser = serial.Serial()
-#select port that has Arduino in description
-for p in ports:
-    if "Arduino" in p.description:
-        ser.port = p.device
-#define baud rate   
-ser.baudrate = 9600
-#open serial port
-ser.open()
+global last_send
+last_send = 0
 
-
-
-def isSquare(frame):
+async def isSquare(frame):
     #initilize variable to store the last time a record was sent
     global last_send
     
@@ -70,7 +55,7 @@ def isSquare(frame):
             if current_time >= 1:
                 #print send message to Arudino
                 print(str(x) + "," + str(area))
-                ser.write((str(x) + "," + str(area)).encode('utf-8'))
+                #ser.write((str(x) + "," + str(area)).encode('utf-8'))
                 
                 #update last send time
                 last_send = time.time()
@@ -79,45 +64,54 @@ def isSquare(frame):
             
       
     return squares
+
+
+async def main():
+    global last_send
+    # Create a VideoCapture object
+    #url = "10.20.1.40:81/stream"
+    cap = cv2.VideoCapture(0)
+
+    # Error handling
+    if not cap.isOpened():
+        print("Error: Could not open camera.")
+        exit()
+
     
-# Create a VideoCapture object
-url = "10.20.1.40:81/stream"
-cap = cv2.VideoCapture(url)
+    while True:
+        
+        # Capture a frame from the camera
+        ret, frame = cap.read()
 
-# Error handling
-if not cap.isOpened():
-    print("Error: Could not open camera.")
-    exit()
+        # Can not read frame
+        if not ret:
+            print("Error: Could not read frame.")
+            break
 
+        #display from with squares
+        squares = isSquare(frame)
     
-while True:
-    # Capture a frame from the camera
-    ret, frame = cap.read()
-
-    # Can not read frame
-    if not ret:
-        print("Error: Could not read frame.")
-        break
-
-    #display from with squares
-    squares = isSquare(frame)
+        #check if squares array is empty, and if it is send 0,0 to Arduino over serial
+        if len(squares) == 0:
+            current_time = time.time() - last_send
+            if current_time >= 1:
+                print("0,0")
+                #ser.write(("0,0").encode('utf-8'))
+                last_send = time.time()
     
-    #check if squares array is empty, and if it is send 0,0 to Arduino over serial
-    if len(squares) == 0:
-        current_time = time.time() - last_send
-        if current_time >= 1:
-            print("0,0")
-            ser.write(("0,0").encode('utf-8'))
-            last_send = time.time()
-    
-    cv2.drawContours(frame, squares, -1, (225, 0, 0), 3)
-    cv2.imshow("Frame", frame)
-    
+        cv2.drawContours(frame, squares, -1, (255, 0, 0), 3)  # Change 225 to 255
 
-    # Exit program when q is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+        cv2.imshow("Frame", frame)
 
-# Release the camera and close the window
-cap.release()
-cv2.destroyAllWindows()
+        # Exit program when q is pressed
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            exit()
+
+    # Release the camera and close the window
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+
+if __name__ == "__main__":
+    main()
