@@ -1,12 +1,16 @@
 import cv2
 import numpy as np
 import time
+import websockets
+import asyncio
+import json
+
 
 
 global last_send
 last_send = 0
 
-async def isSquare(frame):
+async def isSquare(frame, websocket):
     #initilize variable to store the last time a record was sent
     global last_send
     
@@ -55,7 +59,7 @@ async def isSquare(frame):
             if current_time >= 1:
                 #print send message to Arudino
                 print(str(x) + "," + str(area))
-                #ser.write((str(x) + "," + str(area)).encode('utf-8'))
+                await send_toPort(x, area, websocket)
                 
                 #update last send time
                 last_send = time.time()
@@ -66,7 +70,7 @@ async def isSquare(frame):
     return squares
 
 
-async def main():
+async def main(websocket):
     global last_send
     # Create a VideoCapture object
     #url = "10.20.1.40:81/stream"
@@ -96,7 +100,7 @@ async def main():
             current_time = time.time() - last_send
             if current_time >= 1:
                 print("0,0")
-                #ser.write(("0,0").encode('utf-8'))
+                await send_toPort(0,0, websocket)
                 last_send = time.time()
     
         cv2.drawContours(frame, squares, -1, (255, 0, 0), 3)  # Change 225 to 255
@@ -111,7 +115,13 @@ async def main():
     cap.release()
     cv2.destroyAllWindows()
 
-
+async def send_toPort(x, area, websocket):
+    message = {"x": x, "area": area}
+    await websocket.send(json.dumps(message))
 
 if __name__ == "__main__":
+    # Run the server
+    start_server = websockets.serve(main, "10.20.1.93", 8765)
+    asyncio.get_event_loop().run_until_complete(start_server)
+    asyncio.get_event_loop().run_forever()
     main()
