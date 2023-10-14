@@ -66,9 +66,9 @@ async def isSquare(frame, websocket):
 
 async def main(websocket):
     global last_send
-    # Create a VideoCapture object
-    #url = "10.20.1.40:81/stream"
-    cap = cv2.VideoCapture(0)
+    #Create a VideoCapture object
+    url = "http://10.20.1.40:81/stream"
+    cap = cv2.VideoCapture(url)
 
     # Error handling
     if not cap.isOpened():

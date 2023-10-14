@@ -31,7 +31,7 @@ async def client():
                 message_counter +=1
 
                 # Only print every 50th message
-                if message_counter % 50 == 0:
+                if message_counter % 10 == 0:
                     try:
                         # Parse the JSON data
                         data = json.loads(message)
