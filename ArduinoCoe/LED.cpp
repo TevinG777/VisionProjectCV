@@ -11,7 +11,7 @@ LiquidCrystal lcd_1(8, 7, 5, 4, 3, 2);
 
 void setup() {
   // put your setup code here, to run once:
-    Serial.begin(9600);
+    Serial.begin(115200);
     pinMode(LED, OUTPUT);
     pinMode(LED2, OUTPUT);
     pinMode(LED3, OUTPUT);

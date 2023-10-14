@@ -53,6 +53,8 @@ async def isSquare(frame, websocket):
             rect = cv2.boundingRect(cnt)
             x, y, w, h = rect
                   
+            current_time = time.time()-last_send
+            
             await send_toPort(x, area, websocket)
 
         
@@ -86,6 +88,11 @@ async def main(websocket):
 
         #display from with squares
         squares = await isSquare(frame, websocket)
+
+        #if no squares are found, send 0,0
+        if len(squares) == 0:
+            await send_toPort(0, 0, websocket)
+
     
         cv2.drawContours(frame, squares, -1, (255, 0, 0), 3)  # Change 225 to 255
 
@@ -100,12 +107,11 @@ async def main(websocket):
     cv2.destroyAllWindows()
 
 async def send_toPort(data1, data2, websocket):
-    while True:
-
-        message = {"data1": int(data1), "data2": int(data2)}
-        await asyncio.sleep(3)
-        print(message)
-        await websocket.send(json.dumps(message))
+    #send the data as a json object
+    message = {"data1": int(data1), "data2": int(data2)}
+    await asyncio.sleep(0)
+    print(message)
+    await websocket.send(json.dumps(message))
 
 if __name__ == "__main__":
     # Run the server
