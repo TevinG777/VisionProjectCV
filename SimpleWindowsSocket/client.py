@@ -37,10 +37,11 @@ async def client():
                         data = json.loads(message)
                         data1 = data.get("data1")
                         data2 = data.get("data2")
-                        print(f"Received data1: {data1}, data2: {data2}")
+                        
 
                         # Validate and send data to the Arduino
                         if isinstance(data1, int) and isinstance(data2, int):
+                            print(f"Sending.... Received data1: {data1}, data2: {data2}")
                             ser.write(f"{data1},{data2}\n".encode('utf-8'))
                         else:
                             print("Invalid data received from WebSocket.")
