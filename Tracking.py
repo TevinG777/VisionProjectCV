@@ -58,7 +58,6 @@ async def isSquare(frame, websocket):
             
             if current_time >= 1:
                 #print send message to Arudino
-                print(str(x) + "," + str(area))
                 await send_toPort(x, area, websocket)
                 
                 #update last send time
@@ -93,13 +92,12 @@ async def main(websocket):
             break
 
         #display from with squares
-        squares = isSquare(frame)
+        squares = await isSquare(frame, websocket)
     
         #check if squares array is empty, and if it is send 0,0 to Arduino over serial
         if len(squares) == 0:
             current_time = time.time() - last_send
             if current_time >= 1:
-                print("0,0")
                 await send_toPort(0,0, websocket)
                 last_send = time.time()
     
@@ -115,9 +113,12 @@ async def main(websocket):
     cap.release()
     cv2.destroyAllWindows()
 
-async def send_toPort(x, area, websocket):
-    message = {"x": x, "area": area}
-    await websocket.send(json.dumps(message))
+async def send_toPort(data1, data2, websocket):
+    while True:
+        message = {"data1": data1, "data2": data2}
+        asyncio.sleep(3)
+        print(message)
+        await websocket.send(json.dumps(message))
 
 if __name__ == "__main__":
     # Run the server

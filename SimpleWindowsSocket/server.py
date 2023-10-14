@@ -4,7 +4,7 @@ import random
 import time
 import json
 
-async def send_custom_data(websocket, path):
+async def send_custom_data(websocket):
     while True:
         # Generate two random integer values (you can replace this with your own data)
         data1 = random.randint(0, 500)
