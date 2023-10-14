@@ -2,19 +2,21 @@
 #include <LiquidCrystal.h>
 
 // put function declarations here:
-int LED = 12;
-int LED2 = 13;
-int LED3 = 11;
 int seconds = 0;
+int in1 = 4; // variable names for the L298N
+int in2 = 5; // variable names for the L298N
+int in3 = 9; // variable names for the L298N
+int in4 = 10; // variable names for the L298N
 
 LiquidCrystal lcd_1(8, 7, 5, 4, 3, 2);
 
 void setup() {
   // put your setup code here, to run once:
-    Serial.begin(115200);
-    pinMode(LED, OUTPUT);
-    pinMode(LED2, OUTPUT);
-    pinMode(LED3, OUTPUT);
+    Serial.begin(9600);
+    pinMode (in1, OUTPUT); // all L298N digital pins are outputs
+    pinMode (in2, OUTPUT); // all L298N digital pins are outputs
+    pinMode (in3, OUTPUT); // all L298N digital pins are outputs
+    pinMode (in4, OUTPUT); // all L298N digital pins are outputs
 
     //Set up the LCD Display
     lcd_1.begin(16, 2);
@@ -63,10 +65,12 @@ void loop() {
     if(area > 1000 && area < 9000){
         //Clear the LCD
         lcd_1.clear();
-        
-        digitalWrite(LED, HIGH);
-        digitalWrite(LED2, LOW);
-        digitalWrite(LED3, LOW);
+
+        //Stop motor
+        digitalWrite(in1, LOW);
+        digitalWrite(in2, LOW);
+        digitalWrite(in3, LOW);
+        digitalWrite(in4, LOW);
         
         //PRitn mid range to LCD
         lcd_1.setCursor(0, 0);
@@ -78,9 +82,6 @@ void loop() {
 
     }
     else if(area == 0.0){
-      digitalWrite(LED, HIGH);
-      digitalWrite(LED2, HIGH);
-      digitalWrite(LED3, HIGH);
 
       //Clear the LCD
       lcd_1.clear();
@@ -91,9 +92,12 @@ void loop() {
 
     }
     else if(area <= 1000){
-        digitalWrite(LED, LOW);
-        digitalWrite(LED2, HIGH);
-        digitalWrite(LED3, LOW);
+
+        //Set the motor to go forward
+        digitalWrite(in1, LOW);
+        digitalWrite(in2, HIGH);
+        digitalWrite(in3, LOW);
+        digitalWrite(in4, HIGH);
 
         //Clear the LCD
         lcd_1.clear();
@@ -110,9 +114,11 @@ void loop() {
       //Clear the LCD
       lcd_1.clear();   
 
-      digitalWrite(LED, LOW);
-      digitalWrite(LED2, LOW);
-      digitalWrite(LED3, HIGH);
+      //Set motor to go backwards
+      digitalWrite(in1, LOW);
+      digitalWrite(in2, HIGH);
+      digitalWrite(in3, LOW);
+      digitalWrite(in4, HIGH);
 
       //PRitn mid range to LCD
       lcd_1.setCursor(0, 0);
@@ -125,8 +131,6 @@ void loop() {
     }
         
   }
-
-  
 
 }
 
