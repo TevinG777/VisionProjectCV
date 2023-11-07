@@ -46,10 +46,10 @@ void loop() {
       digitalWrite(in3, LOW);
       digitalWrite(in4, HIGH);
 
-      digitalWrite(in2_1, LOW);
-      digitalWrite(in2_2, HIGH);
-      digitalWrite(in2_3, HIGH);
-      digitalWrite(in2_4, LOW);
+      digitalWrite(in2_1, HIGH);
+      digitalWrite(in2_2, LOW);
+      digitalWrite(in2_3, LOW);
+      digitalWrite(in2_4, HIGH);
 
 
     } else if (receivedChar == '0') {
@@ -68,5 +68,35 @@ void loop() {
 
 
     }
+    // else if received 2 go right
+    else if (receivedChar == '2') {
+      Serial.println("Received a 2");
+
+      //Set each group of motors to go forward
+      digitalWrite(in1, LOW);
+      digitalWrite(in2, HIGH);
+      digitalWrite(in3, LOW);
+      digitalWrite(in4, HIGH);
+
+      digitalWrite(in2_1, LOW);
+      digitalWrite(in2_2, HIGH);
+      digitalWrite(in2_3, HIGH);
+      digitalWrite(in2_4, LOW);
+  }
+
+  // else if received 3 go left
+  else if (receivedChar == '3') {
+    Serial.println("Received a 3");
+
+    //Set each group of motors to go forward
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, HIGH);
+    digitalWrite(in4, LOW);
+
+    digitalWrite(in2_1, HIGH);
+    digitalWrite(in2_2, LOW);
+    digitalWrite(in2_3, LOW);
+    digitalWrite(in2_4, HIGH);
   }
 }
