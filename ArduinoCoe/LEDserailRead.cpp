@@ -1,4 +1,4 @@
-#include <SoftwareSerial>
+#include <SoftwareSerial.h>
 
 const byte rxPin = 3; // Arduino RX = D3
 const byte txPin = 2; // Arduino TX = D2
@@ -48,8 +48,8 @@ void loop() {
 
       digitalWrite(in2_1, LOW);
       digitalWrite(in2_2, HIGH);
-      digitalWrite(in2_3, LOW);
-      digitalWrite(in2_4, HIGH);
+      digitalWrite(in2_3, HIGH);
+      digitalWrite(in2_4, LOW);
 
 
     } else if (receivedChar == '0') {
