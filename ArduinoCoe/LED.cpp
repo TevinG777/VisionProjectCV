@@ -43,7 +43,7 @@ void setup() {
 void loop() {
   if(mySerial.available()){
 
-    String msgP = Serial.readString();
+    String msgP = mySerial.readString();
 
     // Initialize variables to hold the float value for area and x pos
     float area = 0.0;
@@ -65,27 +65,7 @@ void loop() {
 
     }
 
-    //if the float is between 1000-15000 then set the LED to HIGH if not green LED On
-    if(area > 6000 && area < 9000){
-
-        //Stop motor
-        digitalWrite(in1, LOW);
-        digitalWrite(in2, LOW);
-        digitalWrite(in3, LOW);
-        digitalWrite(in4, LOW);
-
-        
-        digitalWrite(in2_1, LOW);
-        digitalWrite(in2_2, LOW);
-        digitalWrite(in2_3, LOW);
-        digitalWrite(in2_4, LOW);
-
-        // Set PWM values to stop the motors (0 for full stop)
-        analogWrite(pwmPin1, 0);
-        analogWrite(pwmPin2, 0);
-        
-    }
-    else if(area == 0.0){
+    if(area == 0.0){
          //Stop motor
         digitalWrite(in1, LOW);
         digitalWrite(in2, LOW);
@@ -104,8 +84,8 @@ void loop() {
         analogWrite(pwmPin2, 0);
 
     }
-    else if(area <= 6000){
-
+    else{
+      //drive forward
       // Set each group of motors to go forward
       digitalWrite(in1, LOW);
       digitalWrite(in2, HIGH);
@@ -120,29 +100,6 @@ void loop() {
       // Set PWM values to control speed (0-255, adjust as needed)
       analogWrite(pwmPin1, 255); // Full speed
       analogWrite(pwmPin2, 255); // Full speed
-
-
-    }
-    else if(area >= 9000){
-      //Robot is to close move back
-
-      // Set each group of motors to go backward
-      digitalWrite(in1, HIGH);
-      digitalWrite(in2, LOW);
-      digitalWrite(in3, HIGH);
-      digitalWrite(in4, LOW);
-
-
-      digitalWrite(in2_1, LOW);
-      digitalWrite(in2_2, HIGH);
-      digitalWrite(in2_3, HIGH);
-      digitalWrite(in2_4, LOW);
-
-      // Set PWM values to control speed (0-255, adjust as needed)
-      analogWrite(pwmPin1, 255); // Full speed
-      analogWrite(pwmPin2, 255); // Full speed
-
-
 
     }
         

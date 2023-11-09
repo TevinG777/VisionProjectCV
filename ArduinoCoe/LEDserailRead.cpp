@@ -56,8 +56,8 @@ void loop() {
       digitalWrite(in2_4, HIGH);
 
       // Set PWM values to control speed (0-255, adjust as needed)
-      analogWrite(pwmPin1, 255); // Full speed
-      analogWrite(pwmPin2, 255); // Full speed
+      analogWrite(pwmPin1, 150); // Full speed
+      analogWrite(pwmPin2, 150); // Full speed
 
     } else if (receivedChar == '0') {
       Serial.println("Received a 0");

@@ -5,7 +5,7 @@ def nothing(x):
     pass
 
 # Create a VideoCapture object for the camera
-url = "http://192.168.4.50:81/stream"
+url = "http://10.20.1.40:81/stream"
 cap = cv2.VideoCapture(url)
 
 # Error handling
