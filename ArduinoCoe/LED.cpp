@@ -16,6 +16,8 @@ int in2_2 = 8; // variable names for the L298N
 int in2_3 = 12; // variable names for the L298N
 int in2_4 = 13; // variable names for the L298N
 
+int debugPin = 0;
+
 SoftwareSerial mySerial(rxPin, txPin); // Begin a software serial on pins D3 and D2 to talk to the Pi
 
 void setup() {
@@ -41,29 +43,42 @@ void setup() {
 }
 
 void loop() {
-  if(mySerial.available()){
+  if (mySerial.available()) {
+    static char buffer[64]; // Buffer Characters for incoming messages
+    static byte bufferIndex = 0;
+  
+    char receivedChar = mySerial.read();
 
-    String msgP = mySerial.readString();
-
-    // Initialize variables to hold the float value for area and x pos
-    float area = 0.0;
-    int pos = 0;
-
-    //  Find the comma in the string
-    int commaIndex = msgP.indexOf(',');
-
-    //  If the comma is found, then parse the string
-    if (commaIndex != -1) {
-      //  Get the position string
-      String posStr = msgP.substring(commaIndex , 0);
-      pos = posStr.toInt();
-
-      //  Get the area string
-      String areaStr = msgP.substring(commaIndex + 1);
-      area = areaStr.toFloat();
-
-
+    if (receivedChar == '\n') { // Assuming '\n' is your message delimiter
+      buffer[bufferIndex] = '\0'; // Null-terminate the buffer
+      bufferIndex = 0;
+    
+      // Initialize variables to hold the float value for area and x pos
+      float area = 0.0;
+      int pos = 0;
+    
+      // Parse the buffer
+      char *posStr = strtok(buffer, ","); //Parse the first value (pos)
+      char *areaStr = strtok(NULL, ","); //Parse the second value (area)
+    
+      if (posStr != NULL && areaStr != NULL) {
+        pos = atoi(posStr); // Convert the string to an int
+        area = atof(areaStr); // Convert the string to a float
+      
+      }
+  }  
+  // If the buffer is full, reset it
+  else {
+    buffer[bufferIndex] = receivedChar;
+    bufferIndex++;
+    
+    // Handle the case where the buffer is too small for your messages
+    if (bufferIndex >= sizeof(buffer) - 1) {
+      bufferIndex = 0; // Reset the buffer
     }
+  }
+}
+
 
     if(area == 0.0){
          //Stop motor
