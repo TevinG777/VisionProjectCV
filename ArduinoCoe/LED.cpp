@@ -7,7 +7,7 @@ const int pwmPin1 = 6;
 const int pwmPin2 = 11;
 
 float area = 0.0;
-int pos = 0;
+  int pos = 0;
 
 int in1 = 4; // variable names for the L298N
 int in2 = 5; // variable names for the L298N
@@ -95,7 +95,8 @@ void loop() {
     // Set PWM values to stop the motors (0 for full stop)
     analogWrite(pwmPin1, 0);
     analogWrite(pwmPin2, 0);
-  } else {
+  } 
+  else if(area > 500 && area < 1500){
     // Drive forward
     // Set each group of motors to go forward
     digitalWrite(in1, LOW);
@@ -108,8 +109,36 @@ void loop() {
     digitalWrite(in2_3, LOW);
     digitalWrite(in2_4, HIGH);
 
-    // Set PWM values to control speed (0-255, adjust as needed)
-    analogWrite(pwmPin1, 255); // Full speed
-    analogWrite(pwmPin2, 255); // Full speed
+    if(pos>0 && pos < 120){
+      analogWrite(pwmPin1, 150); // slower
+      analogWrite(pwmPin2, 255); // Full speed
+
+    }
+    else if(pos>=120 && pos <=200)
+    {
+      analogWrite(pwmPin1, 255); // Full speed
+      analogWrite(pwmPin2, 255); // Full speed
+    }
+    else{
+      analogWrite(pwmPin1, 255); // Full speed
+      analogWrite(pwmPin2, 150); // slower
+    }
+    
+  }
+  else{
+        // Stop motors
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, LOW);
+    digitalWrite(in4, LOW);
+
+    digitalWrite(in2_1, LOW);
+    digitalWrite(in2_2, LOW);
+    digitalWrite(in2_3, LOW);
+    digitalWrite(in2_4, LOW);
+
+    // Set PWM values to stop the motors (0 for full stop)
+    analogWrite(pwmPin1, 0);
+    analogWrite(pwmPin2, 0);
   }
 }

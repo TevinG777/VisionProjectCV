@@ -18,8 +18,8 @@ async def isSquare(frame, websocket):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     #define threshold for edge detection for multimeter
-    lower_color = np.array([0, 74, 55])
-    upper_color = np.array([11, 255, 255])
+    lower_color = np.array([66, 107, 0])
+    upper_color = np.array([95, 255, 255])
     #Hue: We dont care what value because we are looking for white
     #Saturation: How color color
     #Value: How bright the color is
