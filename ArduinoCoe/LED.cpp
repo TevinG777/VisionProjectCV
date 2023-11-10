@@ -3,8 +3,8 @@
 
 const byte rxPin = 3; // Arduino RX = D3
 const byte txPin = 2; // Arduino TX = D2
-const int pwmPin1 = 6;
-const int pwmPin2 = 11;
+const int pwmPin1 = 6; // Right
+const int pwmPin2 = 11; //Left
 
 float area = 0.0;
   int pos = 0;
@@ -96,7 +96,7 @@ void loop() {
     analogWrite(pwmPin1, 0);
     analogWrite(pwmPin2, 0);
   } 
-  else if(area > 500 && area < 1500){
+  else if(area > 500 && area < 7000){
     // Drive forward
     // Set each group of motors to go forward
     digitalWrite(in1, LOW);
@@ -109,20 +109,32 @@ void loop() {
     digitalWrite(in2_3, LOW);
     digitalWrite(in2_4, HIGH);
 
-    if(pos>0 && pos < 120){
-      analogWrite(pwmPin1, 150); // slower
-      analogWrite(pwmPin2, 255); // Full speed
+    if(pos>0 && pos < 50){
+      analogWrite(pwmPin1, 255); // right side
+      analogWrite(pwmPin2, 128); // left
 
     }
-    else if(pos>=120 && pos <=200)
+    else if(pos>=50 && pos <105)
     {
-      analogWrite(pwmPin1, 255); // Full speed
+      analogWrite(pwmPin1, 191); // Full speed
+      analogWrite(pwmPin2, 128); // Full speed
+    }
+    else if(pos>=105 && pos <=210)
+    {
+      analogWrite(pwmPin1, 128); // Full speed
+      analogWrite(pwmPin2, 128); // Full speed
+    }
+    else if(pos>=210 && pos <=265)
+    {
+      analogWrite(pwmPin1, 128); // Full speed
+      analogWrite(pwmPin2, 191); // Full speed
+    }
+    else if(pos>265 && pos <=320)
+    {
+      analogWrite(pwmPin1, 128); // Full speed
       analogWrite(pwmPin2, 255); // Full speed
     }
-    else{
-      analogWrite(pwmPin1, 255); // Full speed
-      analogWrite(pwmPin2, 150); // slower
-    }
+
     
   }
   else{

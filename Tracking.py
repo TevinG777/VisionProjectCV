@@ -18,8 +18,8 @@ async def isSquare(frame, websocket):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     #define threshold for edge detection for multimeter
-    lower_color = np.array([66, 107, 0])
-    upper_color = np.array([95, 255, 255])
+    lower_color = np.array([140, 35, 0])
+    upper_color = np.array([179, 255, 255])
     #Hue: We dont care what value because we are looking for white
     #Saturation: How color color
     #Value: How bright the color is
@@ -30,10 +30,10 @@ async def isSquare(frame, websocket):
     #define mask for color
     mask = cv2.inRange(frame, lower_color, upper_color)
     mask_eroded = cv2 . erode ( mask , kernel , iterations = 2)
-    mask_eroded_dilated = cv2 . dilate ( mask_eroded , None , iterations = 8)
+    mask_eroded_dilated = cv2 . dilate ( mask_eroded , None , iterations = 3)
 
     #create list of contour points 
-    contours, _ = cv2.findContours(mask_eroded_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     #filter points to only include squares
     squares = []
@@ -42,7 +42,7 @@ async def isSquare(frame, websocket):
         epsilon = 0.1*cv2.arcLength(cnt, True)
         
         approx = cv2.approxPolyDP(cnt, epsilon, True)
-        minArea = 100
+        minArea = 500
         
         #if the contour is a square, and the area is greater than the minimum area, add it to the list
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
