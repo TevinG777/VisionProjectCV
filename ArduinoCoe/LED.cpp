@@ -109,29 +109,29 @@ void loop() {
     digitalWrite(in2_3, LOW);
     digitalWrite(in2_4, HIGH);
 
-    if(pos>0 && pos < 50){
+    if(pos>=0 && pos < 50){
       analogWrite(pwmPin1, 255); // right side
-      analogWrite(pwmPin2, 128); // left
+      analogWrite(pwmPin2, 0); // left
 
     }
     else if(pos>=50 && pos <105)
     {
-      analogWrite(pwmPin1, 191); // Full speed
-      analogWrite(pwmPin2, 128); // Full speed
+      analogWrite(pwmPin1, 255); // Full speed
+      analogWrite(pwmPin2, 0); // Full speed
     }
     else if(pos>=105 && pos <=210)
     {
-      analogWrite(pwmPin1, 128); // Full speed
-      analogWrite(pwmPin2, 128); // Full speed
+      analogWrite(pwmPin1, 255); // Full speed
+      analogWrite(pwmPin2, 255); // Full speed
     }
     else if(pos>=210 && pos <=265)
     {
-      analogWrite(pwmPin1, 128); // Full speed
-      analogWrite(pwmPin2, 191); // Full speed
+      analogWrite(pwmPin1, 0); // Full speed
+      analogWrite(pwmPin2, 255); // Full speed
     }
     else if(pos>265 && pos <=320)
     {
-      analogWrite(pwmPin1, 128); // Full speed
+      analogWrite(pwmPin1, 0); // Full speed
       analogWrite(pwmPin2, 255); // Full speed
     }
 

@@ -18,7 +18,7 @@ async def isSquare(frame, websocket):
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     
     #define threshold for edge detection for multimeter
-    lower_color = np.array([140, 35, 0])
+    lower_color = np.array([131, 80, 0])
     upper_color = np.array([179, 255, 255])
     #Hue: We dont care what value because we are looking for white
     #Saturation: How color color
@@ -42,7 +42,7 @@ async def isSquare(frame, websocket):
         epsilon = 0.1*cv2.arcLength(cnt, True)
         
         approx = cv2.approxPolyDP(cnt, epsilon, True)
-        minArea = 500
+        minArea = 200
         
         #if the contour is a square, and the area is greater than the minimum area, add it to the list
         if len(approx) == 4 and cv2.contourArea(cnt) > minArea:
