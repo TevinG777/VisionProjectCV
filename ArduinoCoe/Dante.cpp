@@ -57,6 +57,7 @@ void loop() {
     else {
         //If right IR sensor is high, turn left
         if (digitalRead(IR_right) == HIGH) {
+            Serial.println("Right is High");
             digitalWrite(lMot1, HIGH);
             digitalWrite(lMot2, LOW);
             digitalWrite(rMot1, LOW);
@@ -68,6 +69,7 @@ void loop() {
         }
         //If left IR sensor is high, turn right
         else if (digitalRead(IR_left) == HIGH) {
+            Serial.println("Left is High");
             digitalWrite(lMot1, LOW);
             digitalWrite(lMot2, HIGH);
             digitalWrite(rMot1, HIGH);
