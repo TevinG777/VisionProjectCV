@@ -1,6 +1,4 @@
-#include <Arduino.h
-
-TCCR0B = TCCR0B & B11111000 | B00000010; // Set timer 0 to 1/1024 prescaler
+#include <Arduino.h>
 
 int trigPin = 4;
 int echoPin = 3;
@@ -57,17 +55,39 @@ void loop() {
         analogWrite(PWM_l, 0);
     }
     else {
-        //Set pwn Pins
-        analogWrite(PWM_r, 255);
-        analogWrite(PWM_l, 255);
+        //If right IR sensor is high, turn left
+        if (digitalRead(IR_right) == HIGH) {
+            digitalWrite(lMot1, HIGH);
+            digitalWrite(lMot2, LOW);
+            digitalWrite(rMot1, LOW);
+            digitalWrite(rMot2, HIGH);
 
-        //Set motor 1
-        digitalWrite(lMot1, HIGH);
-        digitalWrite(lMot2, LOW);
+            //Set pwn Pins
+            analogWrite(PWM_r, 255);
+            analogWrite(PWM_l, 255);
+        }
+        //If left IR sensor is high, turn right
+        else if (digitalRead(IR_left) == HIGH) {
+            digitalWrite(lMot1, LOW);
+            digitalWrite(lMot2, HIGH);
+            digitalWrite(rMot1, HIGH);
+            digitalWrite(rMot2, LOW);
 
-        //Set motor 2
-        digitalWrite(rMot1, HIGH);
-        digitalWrite(rMot2, LOW);
+            //Set pwn Pins
+            analogWrite(PWM_r, 255);
+            analogWrite(PWM_l, 255);
+        }
+        //If both IR sensors are low, drive forward
+        else {
+            digitalWrite(lMot1, LOW);
+            digitalWrite(lMot2, HIGH);
+            digitalWrite(rMot1, LOW);
+            digitalWrite(rMot2, HIGH);
+
+            //Set pwn Pins
+            analogWrite(PWM_r, 255);
+            analogWrite(PWM_l, 255);
+        }
     }
 
 }
