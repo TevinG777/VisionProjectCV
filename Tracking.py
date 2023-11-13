@@ -56,11 +56,7 @@ async def isSquare(frame, websocket):
             current_time = time.time()-last_send
             
             await send_toPort(x, area, websocket)
-
-        
-                  
-            
-      
+ 
     return squares
 
 
